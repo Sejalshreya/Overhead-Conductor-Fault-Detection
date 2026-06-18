@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Tasks - {{ user.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .tasks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-block-end: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .refresh-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .refresh-btn:hover {
+      background: #5a2532;
+    }
+    
+    .task-count {
+      background: var(--accent);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 15px;
+      font-weight: 600;
+      margin-inline-start: 10px;
+    }
+    
+    .no-tasks {
+      text-align: center;
+      padding: 40px;
+      color: var(--primary);
+      font-size: 1.1em;
+      background: #fff;
+      border-radius: 10px;
+      margin-block: 20px;
+      border: 1px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="team-name">SYNKTRA</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      {% if user.role == "Officer" %}
+        <a href="{{ url_for('staff_management') }}">Staff Management</a>
+      {% endif %}
+      <a href="{{ url_for('person', username=session['user']) }}" style="font-weight: bold; text-decoration: underline;">My Tasks</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="greet-area">
+      <h2>Welcome, {{ user.name }}</h2>
+      <div class="role">You are logged in as <b>{{ user.role }}</b></div>
+    </div>
+
+    <div class="tasks-header">
+      <h3>My Assigned Tasks <span class="task-count">{{ tasks|length }}</span></h3>
+      <button class="refresh-btn" onclick="location.reload()">Refresh</button>
+    </div>
+
+    {% if tasks %}
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>Task ID</th>
+            <th>Pole ID</th>
+            <th>Location</th>
+            <th>Assigned Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+            <tr>
+              <td>#{{ task.id }}</td>
+              <td>{{ task.pole_id }}</td>
+              <td>{{ task.location }}</td>
+              <td>{{ task.assigned_date }}</td>
+              <td>{{ task.due_date }}</td>
+              <td class="status-{{ task.status.lower() }}">{{ task.status }}</td>
+              <td>
+                <button class="btn-action btn-view" onclick="viewPole('{{ task.pole_id }}')">
+                  View
+                </button>
+                {% if task.status == 'Assigned' %}
+                <button class="btn-action btn-complete" onclick="markComplete({{ task.id }})">
+                  Complete
+                </button>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="no-tasks">
+        <p>No tasks assigned yet. Please check back later.</p>
+      </div>
+    {% endif %}
+  </main>
+
+  <script>
+    function viewPole(poleId) {
+      window.location.href = `/pole?poleId=${poleId}`;
+    }
+    
+    function markComplete(taskId) {
+      if (confirm('Mark this task as completed?')) {
+        fetch('/complete-task/' + taskId, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Task marked as completed!');
+            location.reload();
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          alert('Error completing task');
+          console.error('Error:', error);
+        });
+      }
+    }
+    
+    // Auto-refresh every 60 seconds if there are tasks
+    {% if tasks %}
+    setInterval(() => {
+      location.reload();
+    }, 60000);
+    {% endif %}
+  </script>
+</body>
+</html>

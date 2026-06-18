@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pole Details - {{ poleId }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pole.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="team-name">SYNKTRA</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      {% if user.role == "Officer" %}
+        <a href="{{ url_for('staff_management') }}">Staff Management</a>
+      {% endif %}
+      <a href="{{ url_for('person', username=session['user']) }}">My Tasks</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Pole Details -->
+  <main class="container">
+    <h2>Pole Details - {{ poleId }}</h2>
+    <div id="poleDetails">
+      <p><b>Pole ID:</b> {{ poleId }}</p>
+      <p><b>Location:</b> {{ pole_info.location }}</p>
+      <p><b>Status:</b> <span class="status-{{ pole_info.status.lower() }}">{{ pole_info.status }}</span></p>
+      <p><b>Current:</b> {{ pole_info.current }}</p>
+      <p><b>Coordinates:</b> {{ pole_info.lat }}, {{ pole_info.lng }}</p>
+    </div>
+
+    <div id="mapArea">
+      <iframe width="100%" height="300" frameborder="0" style="border:0" 
+        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q={{ pole_info.lat }},{{ pole_info.lng }}&zoom=15" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    {% if user.role == "Officer" %}
+    <section class="assign-section">
+      <h3>Assign Task</h3>
+      <label>Due Date: <input type="date" id="dueDate" required></label>
+      <label>Choose Staff:
+        <select id="staffSelect" required>
+          <option value="">-- Select Staff --</option>
+          {% for staff in staff_list %}
+            <option value="{{ staff.username }}">{{ staff.fullname }} ({{ staff.username }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button onclick="assignTask()">Assign Task</button>
+      <div id="assignMsg"></div>
+    </section>
+    {% endif %}
+  </main>
+
+  <!-- JS -->
+  <script>
+    async function assignTask() {
+      const staffSelect = document.getElementById("staffSelect");
+      const dueDate = document.getElementById("dueDate");
+      const msgBox = document.getElementById("assignMsg");
+
+      if (!staffSelect.value || !dueDate.value) {
+        msgBox.textContent = "⚠️ Please select both staff and due date.";
+        msgBox.style.color = "red";
+        return;
+      }
+
+      const payload = {
+        staff: staffSelect.value,
+        pole_id: "{{ poleId }}",
+        due_date: dueDate.value
+      };
+
+      try {
+        const response = await fetch("/assign-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          msgBox.textContent = "✅ " + result.message;
+          msgBox.style.color = "green";
+          
+          // Clear form
+          staffSelect.value = "";
+          dueDate.value = "";
+        } else {
+          msgBox.textContent = "❌ " + result.message;
+          msgBox.style.color = "red";
+        }
+      } catch (error) {
+        msgBox.textContent = "❌ Error assigning task. Please try again.";
+        msgBox.style.color = "red";
+        console.error("Error:", error);
+      }
+    }
+  </script>
+</body>
+</html>

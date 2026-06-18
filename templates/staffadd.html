@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Add Staff</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/staff.css') }}" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="team-name">SYNKTRA</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}" id="homeNav">Home</a>
+      <a href="{{ url_for('dashboard') }}" id="dashNav">Dashboard</a>
+      <a href="{{ url_for('staff_management') }}" id="staffNav">Staff Management</a>
+      <a href="{{ url_for('logout') }}" id="logoutNav">Logout</a>
+    </nav>
+  </header>
+
+  <h1>Add New Staff</h1>
+
+  {% if message %}
+  <p class="message">{{ message }}</p>
+  {% endif %}
+
+  <form id="addStaffForm" method="POST" action="{{ url_for('add_staff') }}">
+    <label>Username: <input type="text" name="username" id="username" required /></label><br />
+    <label>Full Name: <input type="text" name="fullname" id="fullname" required /></label><br />
+    <label>Phone Number: <input type="text" name="phone" id="phone" required /></label><br />
+    <label>Email ID: <input type="email" name="email" id="email" required /></label><br />
+    <label>Role:
+      <select name="role" id="role">
+        <option value="Staff">Staff</option>
+        <option value="Officer">Officer</option>
+      </select>
+    </label><br />
+    <button type="submit">Add Staff</button>
+  </form>
+
+  <script src="{{ url_for('static', filename='js/staff.js') }}"></script>
+</body>
+</html>

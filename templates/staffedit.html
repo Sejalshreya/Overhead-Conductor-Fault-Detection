@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Staff</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/staff.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="team-name">SYNKTRA</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('staff_management') }}">Staff Management</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Edit Staff Member</h1>
+
+    <form method="POST" action="{{ url_for('edit_staff', username=staff_member.username) }}">
+      <label>Username (read-only):</label>
+      <input type="text" value="{{ staff_member.username }}" readonly>
+
+      <label>Full Name:</label>
+      <input type="text" name="fullname" value="{{ staff_member.fullname }}" required>
+
+      <label>Phone Number:</label>
+      <input type="text" name="phone" value="{{ staff_member.phone }}" required>
+
+      <label>Email:</label>
+      <input type="email" name="email" value="{{ staff_member.email }}" required>
+
+      <label>Role:</label>
+      <select name="role">
+        <option value="Officer" {% if staff_member.role == 'Officer' %}selected{% endif %}>Officer</option>
+        <option value="Staff" {% if staff_member.role == 'Staff' %}selected{% endif %}>Staff</option>
+      </select>
+
+      <button type="submit">Save Changes</button>
+      <a href="{{ url_for('staff') }}" class="btn-cancel">Cancel</a>
+    </form>
+  </main>
+</body>
+</html>

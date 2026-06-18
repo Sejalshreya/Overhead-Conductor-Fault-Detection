@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Smart Voltage Breakage Detection System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Use url_for to load static CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="team-name">SYNKTRA</div>
+      <nav class="nav-links">
+        <a href="{{ url_for('home') }}" id="homeNav">Home</a>
+        {% if user %}
+        <a href="{{ url_for('dashboard') }}" id="dashNav">Dashboard</a>
+        {% if user.role == "Officer" %}
+        <a href="{{ url_for('staff_management') }}" id="staffNav"
+          >Staff Management</a
+        >
+        {% endif %}
+        <!-- FIXED LINE: user.username ki jagah session['user'] use karo -->
+        <a
+          href="{{ url_for('person', username=session['user']) }}"
+          id="tasksNav"
+          >My Tasks</a
+        >
+        <a href="{{ url_for('logout') }}" id="logoutNav">Logout</a>
+        {% else %}
+        <a href="{{ url_for('home') }}" id="dashNav">Dashboard</a>
+        <a href="{{ url_for('home') }}" id="staffNav">Staff Management</a>
+        <a href="{{ url_for('home') }}" id="tasksNav">My Tasks</a>
+        <a href="{{ url_for('home') }}" id="logoutNav">Logout</a>
+        {% endif %}
+      </nav>
+    </header>
+    <main class="container" id="mainContent">
+      <h1>Smart Voltage Breakage Detection System</h1>
+      <div class="tagline">Detecting Breaks, Securing Power</div>
+
+      {% if not user %}
+      <!-- Login Form -->
+      <form
+        class="login-box"
+        id="loginBox"
+        method="POST"
+        action="/login"
+        autocomplete="off"
+      >
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Username"
+          autocomplete="off"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          autocomplete="off"
+          required
+        />
+        <button id="loginBtn" type="submit">Login</button>
+        {% if error %}
+        <div id="loginError" class="login-error">{{ error }}</div>
+        {% else %}
+        <div id="loginError" class="login-error"></div>
+        {% endif %}
+      </form>
+      {% else %}
+      <!-- Welcome Message for Logged-in Users -->
+      <div class="greet-area">
+        <h2>Welcome, {{ user.name }}!</h2>
+        <div class="role">Logged in as <b>{{ user.role }}</b></div>
+      </div>
+      <div class="dashboard-options">
+        <button onclick="window.location.href='{{ url_for('dashboard') }}'">
+          View Dashboard
+        </button>
+        {% if user.role == "Officer" %}
+        <button
+          onclick="window.location.href='{{ url_for('staff_management') }}'"
+        >
+          Staff Management
+        </button>
+        <button onclick="window.location.href='{{ url_for('add_staff') }}'">
+          Add Staff
+        </button>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <h3>Key Features</h3>
+      <div class="features">
+        <div class="feat">
+          <span class="emoji">📊</span> Real-time Voltage Monitoring
+        </div>
+        <div class="feat">
+          <span class="emoji">🚨</span> Instant Alert Notifications
+        </div>
+        <div class="feat">
+          <span class="emoji">📈</span> Historical Data Analysis
+        </div>
+        <div class="feat"><span class="emoji">🔌</span> Easy Integration</div>
+      </div>
+      <h3>Key Challenges</h3>
+      <div class="challenges">
+        <div class="ch">
+          <span class="emoji">⚡</span> Accurate Fault Detection
+        </div>
+        <div class="ch"><span class="emoji">📶</span> Network Stability</div>
+        <div class="ch">
+          <span class="emoji">🧩</span> Hardware Compatibility
+        </div>
+        <div class="ch"><span class="emoji">📖</span> User Training</div>
+      </div>
+      <section class="team-section">
+        <strong>Team Name:</strong> SYNKTRA <br />
+        <em>United for Uninterrupted Power</em> <br /><br />
+        <b>Team Members (6)</b><br />
+        Saadgi Puniwala, Komal Kumari, Mayurika Das, Shreya Jirankali, Sejal
+        Shreya, Navami S
+      </section>
+      <div class="about">
+        We are SYNKTRA, a passionate, innovative tech team of six, dedicated to
+        building robust solutions for smarter, safer power systems.
+      </div>
+    </main>
+    <!-- Use url_for for static JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>

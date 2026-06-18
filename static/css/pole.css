@@ -1,0 +1,155 @@
+/* =========================
+   Global Variables
+========================= */
+:root {
+  --bg: #F4EEE7;        /* Warm beige background */
+  --primary: #6B2E3C;   /* Deep wine for navbar/cards */
+  --accent: #F5CBA7;    /* Soft peach for highlights */
+  --text: #2C2C2C;      /* Dark gray for text */
+}
+
+/* =========================
+   Reset + Base
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   Navbar
+========================= */
+.navbar {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .team-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-inline-start: 15px;
+}
+
+.navbar .nav-links a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   Container
+========================= */
+.container {
+  padding: 20px;
+}
+
+/* =========================
+   Table
+========================= */
+.pole-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  margin-block: 25px;
+  font-size: 1em;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pole-table th, 
+.pole-table td {
+  padding-block: 12px;
+  padding-inline: 16px;
+  border-block-end: 1px solid #ddd;
+  text-align: center;
+}
+
+.pole-table th {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.pole-table tr:hover { 
+  background-color: #f5f5f5; 
+}
+
+/* Status colors */
+.status-healthy { color: green; font-weight: bold; }
+.status-alert   { color: red; font-weight: bold; }
+.status-warning { color: orange; font-weight: bold; }
+
+/* =========================
+   Notification
+========================= */
+.notify-box {
+  padding: 12px;
+  margin-block: 12px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 6px;
+  display: none;
+  color: #856404;
+  font-weight: 500;
+}
+
+/* =========================
+   Pole Details Box
+========================= */
+#poleDetails {
+  margin-block: 20px;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+}
+
+/* =========================
+   Map Area
+========================= */
+#mapArea {
+  inline-size: 100%;
+  block-size: 300px;
+  margin-block: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* =========================
+   Task Assignment
+========================= */
+.assign-section {
+  background: var(--primary);
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-block-start: 20px;
+}
+
+.assign-section label {
+  display: block;
+  margin-block: 10px;
+}
+
+.assign-section button {
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.assign-section button:hover {
+  background: #e8b789;
+}

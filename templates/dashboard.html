@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Smart Voltage Breakage Detection System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="team-name">SYNKTRA</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      {% if user.role == "Officer" %}
+        <a href="{{ url_for('staff_management') }}">Staff Management</a>
+      {% endif %}
+      <a href="{{ url_for('person', username=session['user']) }}">My Tasks</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>LV AC Distribution Breakage Detection</h1>
+    <div class="greet-area">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <div class="role">Logged in as <b>{{ user.role }}</b></div>
+    </div>
+
+    <div id="officerNotify" class="notify-box"></div>
+
+    <table class="pole-table" id="poleTable">
+      <thead>
+        <tr>
+          <th>Pole ID</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Current</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pole_id, pole_info in pole_data.items() %}
+        <tr>
+          <td>{{ pole_id }}</td>
+          <td>{{ pole_info.location }}</td>
+          <td class="status-{{ pole_info.status.lower() }}">{{ pole_info.status }}</td>
+          <td>{{ pole_info.current }}</td>
+          <td>
+            <a href="{{ url_for('pole', poleId=pole_id) }}">View Details</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

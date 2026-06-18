@@ -1,0 +1,82 @@
+:root {
+  --bg: #F4EEE7;
+  --primary: #6B2E3C;
+  --accent: #F5CBA7;
+  --text: #2C2C2C;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-block-size: 100vh;
+  padding-block: 2rem;
+}
+
+h1, h3 {
+  color: var(--primary);
+  margin-block-end: 1rem;
+}
+
+.container {
+  inline-size: 95%;
+  max-inline-size: 1000px;
+  margin: 0 auto 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 20px #6B2E3C22;
+  padding: 2rem;
+}
+
+table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  margin-block-start: 1rem;
+}
+
+th, td {
+  border: 1px solid var(--accent);
+  padding-block: 10px;
+  padding-inline: 10px;
+  text-align: center;
+  color: var(--text);
+}
+
+th {
+  background: var(--primary);
+  color: #FFF8F0;
+}
+
+tr:hover td { background: #fceee0; }
+
+/* Buttons */
+button {
+  background: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  padding-block: 8px;
+  padding-inline: 14px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+button:hover { background: #e1b894; }
+
+/* Upload */
+.upload-section {
+  margin-block-start: 2rem;
+  background: var(--bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #6B2E3C22;
+}
+
+#preview img {
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  max-inline-size: 220px;
+  margin-block-start: 1rem;
+  display: block;
+}
