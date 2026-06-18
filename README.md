@@ -10,6 +10,9 @@ A web dashboard for monitoring low-voltage (LV) AC distribution poles and coordi
 
 Damaged or leaning electricity poles are often discovered only after they've already caused an outage or safety hazard. This project simulates an early-warning pipeline: each pole reports tilt (accelerometer/gyroscope) and load (current) readings, which are classified into a health status (`Healthy`, `Warning`, `Alert`). Grid officers monitor all poles from a central dashboard, drill into individual pole readings and location, and assign repair tasks to field staff, who track and complete them from their own task view.
 
+## 🚀 Live Demo
+https://overhead-conductor-fault-detection-1.onrender.com
+
 ## Features
 
 - **Role-based login** — `Officer` accounts see the full grid and manage staff; `Staff` accounts see only their own assigned tasks.
